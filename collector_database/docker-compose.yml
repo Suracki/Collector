@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+    collectordb:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: 'password'
+            MYSQL_DATABASE: 'collector'
+        ports:
+            - "3384:3306"
+        volumes:
+            - collector-db:/var/lib/collectordb
+        container_name: collectordb
+volumes:
+    collector-db:
+
