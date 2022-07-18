@@ -1,5 +1,6 @@
 package com.suracki.collector.service;
 
+import com.suracki.collector.domain.Item;
 import com.suracki.collector.domain.Location;
 import com.suracki.collector.domain.User;
 import com.suracki.collector.repository.ItemRepository;
@@ -10,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+
+import javax.validation.Valid;
 
 @Service
 public class AdminService {
@@ -51,5 +55,18 @@ public class AdminService {
     public String home(Model model) {
         model.addAttribute("items", itemRepository.findAll());
         return "admin/manage";
+    }
+
+    public String addItem(Item item) {
+        return "admin/addItem";
+    }
+
+    public String validate(@Valid Item item, BindingResult result, Model model) {
+        if (!result.hasErrors()) {
+            itemRepository.save(item);
+            model.addAttribute("items", itemRepository.findAll());
+            return "redirect:/admin/manage";
+        }
+        return "admin/addItem";
     }
 }
