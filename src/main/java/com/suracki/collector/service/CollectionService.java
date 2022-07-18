@@ -9,7 +9,10 @@ import com.suracki.collector.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Service
@@ -38,7 +41,6 @@ public class CollectionService {
         setupDefaultStorage();
         setupDefaultItems();
     }
-
     private void setupDefaultStorage() {
         Location marvelBox = new Location();
         Location originBinder = new Location();
@@ -48,7 +50,6 @@ public class CollectionService {
         locationRepository.save(originBinder);
         logger.info("Default storage added.");
     }
-
     private void setupDefaultItems() {
 
         int marvelBoxId = locationRepository.findByName("Marvel Longbox").getLocationId();
@@ -92,5 +93,31 @@ public class CollectionService {
 
         logger.info("Default items added.");
 
+    }
+
+    public String guestViewHome(Model model) {
+        List<String> allTypes = itemRepository.getTypes();
+        LinkedHashSet<String> setTypes = new LinkedHashSet<String>(allTypes);
+        List<String> uniqueTypes = new ArrayList<>(setTypes);
+        model.addAttribute("types", uniqueTypes);
+        return "guest/viewHome";
+    }
+
+    public String viewByType(String type, Model model) {
+        List<Item> collection = itemRepository.findByType(type);
+        model.addAttribute("collection", collection);
+        return "guest/view";
+    }
+
+    public String viewByName(String name, Model model) {
+        List<Item> collection = itemRepository.findByName(name);
+        model.addAttribute("collection", collection);
+        return "guest/view";
+    }
+
+    public String viewByDetail(String detail, Model model) {
+        List<Item> collection = itemRepository.findByDetail(detail);
+        model.addAttribute("collection", collection);
+        return "guest/view";
     }
 }

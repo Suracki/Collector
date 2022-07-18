@@ -52,7 +52,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/css/bootstrap.min.css").permitAll()
+                .antMatchers("/css/**").permitAll()
                 .antMatchers("/login/**").permitAll()
+                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/guest/**").permitAll()
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -62,7 +65,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/app-logout"))
+                .logoutUrl("/app-logout")
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/app-logout"))
                 .logoutSuccessUrl("/")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true).permitAll();
