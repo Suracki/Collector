@@ -28,16 +28,4 @@ public class HomeController {
         return "home";
     }
 
-    @RequestMapping("/admin/manage")
-    public String adminHome(Model model)
-    {
-        logger.info("User connected to admin/manage endpoint");
-        if (!roleCheck.RoleCheck("Admin")) {
-            logger.info("User is not an ADMIN, logging out and redirecting");
-            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-            return "/";
-        }
-        return adminService.home(model);
-    }
-
 }

@@ -3,6 +3,7 @@ package com.suracki.collector.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="item")
@@ -15,10 +16,10 @@ public class Item {
     @NotEmpty(message = "Item Name (eg: Card Name) is mandatory.")
     private String itemName;
 
-    @NotEmpty(message = "Item Number (eg: Issue Number) is mandatory.")
+    @NotNull(message = "Item Number (eg: Issue Number) is mandatory.")
     private int itemNumber;
 
-    @NotEmpty(message = "Item Quantity is mandatory.")
+    @NotNull(message = "Item Quantity is mandatory.")
     private int itemQuantity;
 
     private String itemCondition;
