@@ -14,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 @Service
 public class AdminService {
@@ -53,7 +56,14 @@ public class AdminService {
     }
 
     public String home(Model model) {
+        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
         model.addAttribute("items", itemRepository.findAll());
+        return "admin/manage";
+    }
+
+    public String homeFiltered(String type, Model model) {
+        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
+        model.addAttribute("items", itemRepository.findByType(type));
         return "admin/manage";
     }
 

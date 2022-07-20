@@ -4,22 +4,25 @@
 <head>
 <meta charset="utf-8"/>
 <title>Manage Collection</title>
-<link rel="stylesheet" href="../../css/bootstrap.min.css" >
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
 </head>
 <body>
 <div class="container">
 	<div class="row">
 		<div class="col-6">
-<!--			Navigation Here-->
-			<a href="/bidList/list">Bid List</a>&nbsp;|&nbsp;
-			<a href="/curvePoint/list">Curve Points</a>&nbsp;|&nbsp;
-			<a href="/rating/list">Ratings</a>&nbsp;|&nbsp;
-			<a href="/trade/list">Trade</a>&nbsp;|&nbsp;
-			<a href="/ruleName/list">Rule</a>
+			Filter by type:
+			<th:block th:each="type :  ${types}">
+				<a th:href="${'/admin/manageByType/?type=' + type}"/>
+				<td th:text="${type}"></td>
+				</a>&nbsp;|&nbsp;
+			</th:block>
+			<a th:href="${'/admin/manage'}"/>
+			<td th:text="All"></td></a>
 		</div>
+
 		<div class="col-6 text-right">
 			Logged in user: <b th:inline="text"  class="user"> [[${#httpServletRequest.remoteUser}]] </b>
-			<form th:action="@{/app-logout}" method="POST">
+			<form th:action="@{/app-logout}" method="POST" name="logoutForm">
 				<input type="submit" value="Logout"/>
 			</form>
 		</div>
@@ -31,14 +34,15 @@
 			<thead>
 				<tr>
 					<th>Id</th>
+					<th>Quantity</th>
 					<th>Name</th>
 					<th>Number</th>
 					<th>Condition</th>
-					<th>Quantity</th>
 					<th>Comments</th>
 					<th>Detail</th>
 					<th>Type</th>
-					<th>Location</th>
+					<th>Storage</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -51,6 +55,7 @@
 				<td th:text="${item.comments}"></td>
 				<td th:text="${item.detail}"></td>
 				<td th:text="${item.type}"></td>
+				<td th:text="${item.storageLocation}"></td>
 				<td style="width: 15%" class="text-center">
 					<a th:href="@{/bidList/update/{id}(id=${item.itemId})}">Edit</a>&nbsp;|&nbsp;
 					<a th:href="@{/bidList/delete/{id}(id=${item.itemId})}">Delete</a>

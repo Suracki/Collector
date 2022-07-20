@@ -2,10 +2,8 @@ package com.suracki.collector.service;
 
 import com.suracki.collector.domain.Item;
 import com.suracki.collector.domain.Location;
-import com.suracki.collector.domain.User;
 import com.suracki.collector.repository.ItemRepository;
 import com.suracki.collector.repository.LocationRepository;
-import com.suracki.collector.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,16 +14,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 @Service
-public class CollectionService {
-
-    ItemRepository itemRepository;
-    LocationRepository locationRepository;
+public class CollectionService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(CollectionService.class);
 
     public CollectionService(ItemRepository itemRepository, LocationRepository locationRepository) {
-        this.itemRepository = itemRepository;
-        this.locationRepository = locationRepository;
+        super(itemRepository, locationRepository);
         logger.info("CollectionService created");
         dummySetup();
     }
@@ -96,28 +90,25 @@ public class CollectionService {
     }
 
     public String guestViewHome(Model model) {
-        List<String> allTypes = itemRepository.getTypes();
-        LinkedHashSet<String> setTypes = new LinkedHashSet<String>(allTypes);
-        List<String> uniqueTypes = new ArrayList<>(setTypes);
-        model.addAttribute("types", uniqueTypes);
+        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
         return "guest/viewHome";
     }
 
     public String viewByType(String type, Model model) {
-        List<Item> collection = itemRepository.findByType(type);
-        model.addAttribute("collection", collection);
+        super.addTypes(model);
+        model.addAttribute("collection", itemRepository.findByType(type));
         return "guest/view";
     }
 
     public String viewByName(String name, Model model) {
-        List<Item> collection = itemRepository.findByName(name);
-        model.addAttribute("collection", collection);
+        super.addTypes(model);
+        model.addAttribute("collection", itemRepository.findByName(name));
         return "guest/view";
     }
 
     public String viewByDetail(String detail, Model model) {
-        List<Item> collection = itemRepository.findByDetail(detail);
-        model.addAttribute("collection", collection);
+        super.addTypes(model);
+        model.addAttribute("collection", itemRepository.findByDetail(detail));
         return "guest/view";
     }
 }
