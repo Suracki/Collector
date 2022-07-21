@@ -67,7 +67,8 @@ public class AdminService {
         return "admin/manage";
     }
 
-    public String addItem(Item item) {
+    public String addItem(Model model, Item item) {
+        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
         return "admin/addItem";
     }
 
@@ -78,5 +79,30 @@ public class AdminService {
             return "redirect:/admin/manage";
         }
         return "admin/addItem";
+    }
+
+    public String showUpdateForm(Integer id, Model model) {
+        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
+        Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid id:" + id));
+        model.addAttribute("item", item);
+        return "admin/editItem";
+    }
+
+    public String updateItem(Integer id, Item item, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "admin/editItem";
+        }
+        item.setItemId(id);
+        itemRepository.save(item);
+        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
+        model.addAttribute("items", itemRepository.findByType(item.getType()));
+        return "admin/manage";
+    }
+
+    public String deleteItem(Integer id, Model model) {
+        itemRepository.deleteById(id);
+        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
+        model.addAttribute("items", itemRepository.findAll());
+        return "admin/manage";
     }
 }

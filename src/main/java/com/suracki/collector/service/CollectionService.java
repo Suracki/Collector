@@ -46,9 +46,6 @@ public class CollectionService extends BaseService {
     }
     private void setupDefaultItems() {
 
-        int marvelBoxId = locationRepository.findByName("Marvel Longbox").getLocationId();
-        int originsBinderId = locationRepository.findByName("Origins Binder").getLocationId();
-
         Item xmen = new Item();
         Item avengers = new Item();
         Item jace = new Item();
@@ -57,28 +54,28 @@ public class CollectionService extends BaseService {
         xmen.setItemName("Uncanny X-Men");
         xmen.setItemNumber(600);
         xmen.setType("Comic");
-        xmen.setStorageLocation(marvelBoxId);
+        xmen.setStorageLocation("Marvel Longbox");
 
         avengers.setItemName("Uncanny Avengers");
         avengers.setItemNumber(1);
         avengers.setType("Comic");
-        avengers.setStorageLocation(marvelBoxId);
+        avengers.setStorageLocation("Marvel Longbox");
 
         jace.setItemName("Jace, Vryn's Prodigy / Jace, Telepath Unbound");
         jace.setItemNumber(60);
         jace.setItemCondition("NM");
         jace.setItemQuantity(1);
-        jace.setDetail("Magic Origins");
+        jace.setDetail("ORI");
         jace.setType("MTG");
-        jace.setStorageLocation(originsBinderId);
+        jace.setStorageLocation("Origins Binder");
 
         land.setItemName("Fire-Lit Thicket");
         land.setItemNumber(29);
         land.setItemCondition("NM");
         land.setItemQuantity(1);
-        land.setDetail("Zendikar Expeditions");
+        land.setDetail("EXP");
         land.setType("MTG");
-        land.setStorageLocation(originsBinderId);
+        land.setStorageLocation("Origins Binder");
 
         itemRepository.save(xmen);
         itemRepository.save(avengers);

@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS item (
   comments VARCHAR(100),
   detail VARCHAR(100),
   type VARCHAR(100) NOT NULL,
-  storageLocation tinyint
+  storageLocation VARCHAR(100)
 );

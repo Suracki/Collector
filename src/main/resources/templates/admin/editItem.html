@@ -3,8 +3,8 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>Add Item</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
+    <title>Update Item</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" >
 </head>
 <body>
 <div class="container">
@@ -28,73 +28,73 @@
         </div>
     </div>
     <div class="row">
-        <h2>Add New Item</h2>
+        <h2>Update Item</h2>
     </div>
 
     <div class="row">
-        <form action="#" th:action="@{/admin/addItem/validate}" th:object="${item}" method="post" class="form-horizontal" style="width: 100%">
+        <form action="#" th:action="@{/admin/updateItem/{id}(id=${item.itemId})}" th:object="${item}" method="post" class="form-horizontal" style="width: 100%">
             <div class="form-group">
                 <label for="itemName" class="col-sm-2 control-label">Name</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{itemName}" id="itemName" placeholder="Name" class="col-4">
+                    <input type="text" th:field="*{itemName}" id="itemName" placeholder=${item.itemName} class="col-4">
                     <p class="text-danger" th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="itemNumber" class="col-sm-2 control-label">Number</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{itemNumber}" id="itemNumber" placeholder="itemNumber" class="col-4">
+                    <input type="text" th:field="*{itemNumber}" id="itemNumber" placeholder=${item.itemNumber} class="col-4">
                     <p class="text-danger" th:if="${#fields.hasErrors('itemNumber')}" th:errors="*{itemNumber}"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="itemCondition" class="col-sm-2 control-label">Condition</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{itemCondition}" id="itemCondition" placeholder="Condition" class="col-4">
+                    <input type="text" th:field="*{itemCondition}" id="itemCondition" placeholder=${item.itemCondition} class="col-4">
                     <p class="text-danger" th:if="${#fields.hasErrors('itemCondition')}" th:errors="*{itemCondition}"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="itemQuantity" class="col-sm-2 control-label">Quantity</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{itemQuantity}" id="itemQuantity" placeholder="Quantity" class="col-4">
+                    <input type="text" th:field="*{itemQuantity}" id="itemQuantity" placeholder=${item.itemQuantity} class="col-4">
                     <p class="text-danger" th:if="${#fields.hasErrors('itemQuantity')}" th:errors="*{itemQuantity}"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="comments" class="col-sm-2 control-label">Comments</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{comments}" id="comments" placeholder="Comments" class="col-4">
+                    <input type="text" th:field="*{comments}" id="comments" placeholder=${item.comments} class="col-4">
                     <p class="text-danger" th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="detail" class="col-sm-2 control-label">Detail</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{detail}" id="detail" placeholder="Detail" class="col-4">
+                    <input type="text" th:field="*{detail}" id="detail" placeholder=${item.detail} class="col-4">
                     <p class="text-danger" th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="type" class="col-sm-2 control-label">Type</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{type}" id="type" placeholder="Type" class="col-4">
+                    <input type="text" th:field="*{type}" id="type" placeholder=${item.type} class="col-4">
                     <p class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="storageLocation" class="col-sm-2 control-label">Storage</label>
                 <div class="col-sm-10">
-                    <input type="text" th:field="*{storageLocation}" id="storageLocation" placeholder="Storage" class="col-4">
+                    <input type="text" th:field="*{storageLocation}" id="storageLocation" placeholder=${item.storageLocation} class="col-4">
                     <p class="text-danger" th:if="${#fields.hasErrors('storageLocation')}" th:errors="*{storageLocation}"></p>
                 </div>
             </div>
 
-
             <div class="form-group">
                 <div class="col-sm-12">
+                    <input type="hidden" th:field="*{itemId}">
                     <a class="btn btn-danger btn-sm" href="/admin/manage">Cancel</a>
-                    <input class="btn btn-primary btn-sm" type="submit" value="Add Item">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Update Item">
                 </div>
             </div>
 

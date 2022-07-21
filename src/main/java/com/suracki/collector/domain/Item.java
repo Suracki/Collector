@@ -29,7 +29,7 @@ public class Item {
     @NotEmpty(message = "Type is mandatory.")
     private String type;
 
-    private int storageLocation;
+    private String storageLocation;
 
     public int getItemId() {
         return itemId;
@@ -87,11 +87,11 @@ public class Item {
         this.type = type;
     }
 
-    public int getStorageLocation() {
+    public String getStorageLocation() {
         return storageLocation;
     }
 
-    public void setStorageLocation(int storageLocation) {
+    public void setStorageLocation(String storageLocation) {
         this.storageLocation = storageLocation;
     }
 

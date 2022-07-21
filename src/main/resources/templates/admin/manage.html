@@ -57,8 +57,8 @@
 				<td th:text="${item.type}"></td>
 				<td th:text="${item.storageLocation}"></td>
 				<td style="width: 15%" class="text-center">
-					<a th:href="@{/bidList/update/{id}(id=${item.itemId})}">Edit</a>&nbsp;|&nbsp;
-					<a th:href="@{/bidList/delete/{id}(id=${item.itemId})}">Delete</a>
+					<a th:href="@{/admin/updateItem/{id}(id=${item.itemId})}">Edit</a>&nbsp;|&nbsp;
+					<a th:href="@{/admin/deleteItem/{id}(id=${item.itemId})}">Delete</a>
 				</td>
 			</tr>
 			</tbody>
