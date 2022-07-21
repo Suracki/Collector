@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -36,6 +37,18 @@ public class AdminController {
             return "/";
         }
         return adminService.home(model);
+    }
+
+    @RequestMapping("/admin/manageByType")
+    public String adminHomeFiltered(@RequestParam(value="type") String type, Model model)
+    {
+        logger.info("User connected to admin/manage endpoint");
+        if (!roleCheck.RoleCheck("Admin")) {
+            logger.info("User is not an ADMIN, logging out and redirecting");
+            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+            return "/";
+        }
+        return adminService.homeFiltered(type, model);
     }
 
     @RequestMapping("/admin/addItem")
