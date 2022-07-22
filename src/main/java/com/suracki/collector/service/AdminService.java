@@ -85,10 +85,14 @@ public class AdminService extends BaseService{
         if (!result.hasErrors()) {
             itemRepository.save(item);
             if (item.getType().equals("MTG")) {
-                if (mtgCardRepository.findBySetAndCollectorNumber(String.valueOf(item.getItemNumber()), item.getDetail()) == null) {
+                if (mtgCardRepository.findBySetAndCollectorNumber(item.getDetail(), String.valueOf(item.getItemNumber())) == null) {
+                    logger.info("Card details not found in MtgCardRepository: " + item.getItemName());
                     ScryfallCard scryfallCard = scryfall.getCardInfo(item.getDetail(), item.getItemNumber());
                     MtgCard mtgCard = new MtgCard(scryfallCard);
                     mtgCardRepository.save(mtgCard);
+                }
+                else {
+                    logger.info("Card details already stored in MtgCardRepository: " + item.getItemName());
                 }
             }
             model.addAttribute("items", itemRepository.findAll());

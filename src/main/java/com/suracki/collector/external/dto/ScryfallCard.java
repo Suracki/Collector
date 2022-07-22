@@ -70,6 +70,15 @@ public class ScryfallCard {
     Map<String, Double> prices;
     Map<String, String> related_uris;
     Map<String, String> purchase_uris;
+    List<CardFace> card_faces;
+
+    public List<CardFace> getCard_faces() {
+        return card_faces;
+    }
+
+    public void setCard_faces(List<CardFace> card_faces) {
+        this.card_faces = card_faces;
+    }
 
     public String getObject() {
         return object;

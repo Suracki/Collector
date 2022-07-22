@@ -68,7 +68,7 @@ public class CollectionService extends BaseService {
         avengers.setType("Comic");
         avengers.setStorageLocation("Marvel Longbox");
 
-        jace.setItemName("Jace, Vryn's Prodigy / Jace, Telepath Unbound");
+        jace.setItemName("Jace, Vryn's Prodigy // Jace, Telepath Unbound");
         jace.setItemNumber(60);
         jace.setItemCondition("NM");
         jace.setItemQuantity(1);

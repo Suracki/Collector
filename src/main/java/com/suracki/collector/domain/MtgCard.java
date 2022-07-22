@@ -31,6 +31,9 @@ public class MtgCard {
         this.name = scryfallCard.getName();
         if (scryfallCard.getImage_uris() == null) {
             this.image_uri = "";
+            if (scryfallCard.getCard_faces() != null && scryfallCard.getCard_faces().size() != 0) {
+                this.image_uri = scryfallCard.getCard_faces().get(0).getImage_uris().get("normal");
+            }
         }
         else {
             this.image_uri = scryfallCard.getImage_uris().get("normal");
