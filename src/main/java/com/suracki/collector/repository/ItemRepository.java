@@ -20,4 +20,8 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
     @Query("SELECT type FROM Item")
     List<String> getTypes();
+
+    @Query("SELECT COUNT(*) FROM Item WHERE type = ?1")
+    int getCountOfType(String type);
+
 }

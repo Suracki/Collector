@@ -2,12 +2,18 @@ package com.suracki.collector.service;
 
 import com.suracki.collector.domain.Item;
 import com.suracki.collector.domain.Location;
+import com.suracki.collector.domain.MtgCard;
+import com.suracki.collector.external.dto.ScryfallCard;
 import com.suracki.collector.repository.ItemRepository;
 import com.suracki.collector.repository.LocationRepository;
+import com.suracki.collector.repository.MtgCardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -18,8 +24,9 @@ public class CollectionService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(CollectionService.class);
 
-    public CollectionService(ItemRepository itemRepository, LocationRepository locationRepository) {
-        super(itemRepository, locationRepository);
+    public CollectionService(ItemRepository itemRepository, LocationRepository locationRepository,
+                             MtgCardRepository mtgCardRepository) {
+        super(itemRepository, locationRepository, mtgCardRepository);
         logger.info("CollectionService created");
         dummySetup();
     }
@@ -107,5 +114,17 @@ public class CollectionService extends BaseService {
         super.addTypes(model);
         model.addAttribute("collection", itemRepository.findByDetail(detail));
         return "guest/view";
+    }
+
+    public String cardDetails(Model model, String set_code, String collectors_number) {
+        MtgCard mtgCard = mtgCardRepository.findBySetAndCollectorNumber(set_code, collectors_number);
+        if (mtgCard == null) {
+            ScryfallCard scryfallCard = scryfall.getCardInfo(set_code, Integer.parseInt(collectors_number));
+            mtgCard = new MtgCard(scryfallCard);
+            mtgCardRepository.save(mtgCard);
+        }
+        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
+        model.addAttribute("mtgCard", mtgCard);
+        return "guest/cardDetails";
     }
 }

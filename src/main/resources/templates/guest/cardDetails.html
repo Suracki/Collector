@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>MTG Card Details</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" >
+</head>
+<body>
+<div class="container">
+    <div class="row no-gutters">
+        <div class="col-6">
+            Filter by type:
+            <th:block th:each="type :  ${types}">
+                <a th:href="${'/guest/viewByType/?type=' + type}"/>
+                <td th:text="${type}"></td>
+                </a>&nbsp;|
+            </th:block>
+            <a th:href="${'/'}"/>
+            <td th:text="Home"></td></a>
+        </div>
+    </div>
+    <div class="row">
+        <h2>MTG Card Details</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-7">
+                <form action="#" class="form-horizontal" style="width: 100%">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><h5>Name:</h5></label>
+                        <td style="width: 10%" th:text="${mtgCard.name}" class="col-4"></td>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><h5>Set Code:</h5></label>
+                        <td style="width: 10%" th:text="${mtgCard.set_code}" class="col-4"></td>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><h5>Set Name::</h5></label>
+                        <td style="width: 10%" th:text="${mtgCard.set_name}" class="col-4"></td>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><h5>Collector's Number:</h5></label>
+                        <td style="width: 10%" th:text="${mtgCard.collector_number}" class="col-4"></td>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><h5>Rarity:</h5></label>
+                        <td style="width: 10%" th:text="${mtgCard.rarity}" class="col-4"></td>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><h5>Current Price (€):</h5></label>
+                        <td style="width: 10%" th:text="${mtgCard.price}" class="col-4"></td>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><h5>Price last updated:</h5></label>
+                        <td style="width: 10%" th:text="${mtgCard.priceUpdateTime}" class="col-4"></td>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><h5>Buy/Sell:</h5></label>
+                        <td style="width: 10%" class="col-4"><a th:href="@{https://www.cardmarket.com/en/Magic/Products/Search?searchString={name}(name=${mtgCard.name})}">Cardmarket</a></td>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <a class="btn btn-danger btn-sm" href="/guest/viewByType/?type=MTG">Back</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="col-4">
+                <img th:src="${mtgCard.image_uri}"/>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

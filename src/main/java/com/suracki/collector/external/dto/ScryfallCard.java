@@ -1,9 +1,11 @@
 package com.suracki.collector.external.dto;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Map;
 
-public class MtgCard {
+public class ScryfallCard {
     String object;
     String id;
     String oracle_id;

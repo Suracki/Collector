@@ -2,7 +2,7 @@ package com.suracki.collector.external;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suracki.collector.external.dto.MtgCard;
+import com.suracki.collector.external.dto.ScryfallCard;
 import com.suracki.collector.external.retrofit.ScryfallRetro;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
@@ -14,6 +14,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.util.Locale;
 
 @Service
 public class Scryfall {
@@ -22,7 +23,7 @@ public class Scryfall {
 
     private Gson gson = new GsonBuilder().setLenient().create();
 
-    public MtgCard getCardInfo(String set, int id) {
+    public ScryfallCard getCardInfo(String set, int id) {
         logger.info("Scryfall getCardInfo called for [" + set + "] #" + id);
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -33,13 +34,16 @@ public class Scryfall {
                 .build();
 
         ScryfallRetro scryfallRetro = retrofit.create(ScryfallRetro.class);
-        Call<MtgCard> callSync = scryfallRetro.getCardInfo(set, id);
+        Call<ScryfallCard> callSync = scryfallRetro.getCardInfo(set.toLowerCase(Locale.ROOT), id);
 
         try {
-            Response<MtgCard> response = callSync.execute();
-            MtgCard mtgCard = response.body();
-            logger.info("Card info loaded for \"" + mtgCard.getName() + "\"");
-            return mtgCard;
+            Response<ScryfallCard> response = callSync.execute();
+            ScryfallCard scryfallCard = response.body();
+            logger.info("Card info loaded for \"" + scryfallCard.getName() + "\"");
+
+            System.out.println("Card JSON: ");
+            System.out.println(gson.toJson(scryfallCard));
+            return scryfallCard;
         }
         catch (IOException e) {
         logger.error("addToVisitedLocations external call failed: " + e);

@@ -4,6 +4,7 @@ import com.suracki.collector.service.CollectionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,6 +43,13 @@ public class GuestController {
     public String viewFilterDetail(@RequestParam(value="detail") String detail, Model model) {
         logger.info("User connected to /guest/filterDetail/{detail} endpoint with detail " + detail);
         return collectionService.viewByDetail(detail, model);
+    }
+
+    @GetMapping("/guest/cardDetails")
+    public String cardDetails(@RequestParam(value="set_code") String set_code, @RequestParam(value="collectors_number") String collectors_number,
+                              Model model){
+        logger.info("User connected to /guest/cardDetails endpoint for card with set " + set_code + " and number " + collectors_number);
+        return collectionService.cardDetails(model, set_code, collectors_number);
     }
 
 

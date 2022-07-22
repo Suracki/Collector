@@ -1,8 +1,6 @@
 package com.suracki.collector.controller;
 
 import com.suracki.collector.domain.Item;
-import com.suracki.collector.external.Scryfall;
-import com.suracki.collector.external.dto.MtgCard;
 import com.suracki.collector.security.RoleCheck;
 import com.suracki.collector.service.AdminService;
 import org.apache.logging.log4j.LogManager;
@@ -109,10 +107,22 @@ public class AdminController {
         return adminService.updateItem(id, item, result, model);
     }
 
+    @GetMapping("/admin/cardDetails")
+    public String cardDetails(@RequestParam(value="set_code") String set_code, @RequestParam(value="collectors_number") String collectors_number,
+                              Model model){
+        logger.info("User connected to /admin/cardDetails endpoint for card with set " + set_code + " and number " + collectors_number);
+        if (!roleCheck.RoleCheck("Admin")) {
+            logger.info("User is not an ADMIN, logging out and redirecting");
+            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+            return "home";
+        }
+        return adminService.cardDetails(model, set_code, collectors_number);
+    }
+
 //    @GetMapping("/admin/testScry/")
 //    public String testScryfall(Model model) {
 //        Scryfall scryfall = new Scryfall();
-//        MtgCard card = scryfall.getCardInfo("ori", 60);
+//        ScryfallCard card = scryfall.getCardInfo("ori", 60);
 //        System.out.println("Name: " + card.getName());
 //        System.out.println("Set: " + card.getSet_name());
 //        System.out.println("Value: " + card.getPrices().get("eur") + " EUR");
