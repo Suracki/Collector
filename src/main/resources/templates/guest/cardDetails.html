@@ -27,49 +27,49 @@
     <div class="container">
         <div class="row">
             <div class="col-7">
-                <form action="#" class="form-horizontal" style="width: 100%">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><h5>Name:</h5></label>
-                        <td style="width: 10%" th:text="${mtgCard.name}" class="col-4"></td>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><h5>Set Code:</h5></label>
-                        <td style="width: 10%" th:text="${mtgCard.set_code}" class="col-4"></td>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><h5>Set Name::</h5></label>
-                        <td style="width: 10%" th:text="${mtgCard.set_name}" class="col-4"></td>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><h5>Collector's Number:</h5></label>
-                        <td style="width: 10%" th:text="${mtgCard.collector_number}" class="col-4"></td>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><h5>Rarity:</h5></label>
-                        <td style="width: 10%" th:text="${mtgCard.rarity}" class="col-4"></td>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><h5>Current Price (€):</h5></label>
-                        <td style="width: 10%" th:text="${mtgCard.price}" class="col-4"></td>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><h5>Price last updated:</h5></label>
-                        <td style="width: 10%" th:text="${mtgCard.priceUpdateTime}" class="col-4"></td>
-                    </div>
+<!--                -->
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row"><h5>Name:</h5></th>
+                        <th th:text="${mtgCard.name}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Set Code:</h5></th>
+                        <th th:text="${mtgCard.set_code}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Set Name:</h5></th>
+                        <th th:text="${mtgCard.set_name}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Collector's Number:</h5></th>
+                        <th th:text="${mtgCard.collector_number}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Rarity:</h5></th>
+                        <th th:text="${mtgCard.rarity}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Current Price (€):</h5></th>
+                        <th th:text="${mtgCard.price}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Price last updated:</h5></th>
+                        <th th:text="${mtgCard.priceUpdateTime}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Buy/Sell:</h5></th>
+                        <td><a th:href="@{https://www.cardmarket.com/en/Magic/Products/Search?searchString={name}(name=${mtgCard.name})}">Cardmarket</a></td>
+                    </tr>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><h5>Buy/Sell:</h5></label>
-                        <td style="width: 10%" class="col-4"><a th:href="@{https://www.cardmarket.com/en/Magic/Products/Search?searchString={name}(name=${mtgCard.name})}">Cardmarket</a></td>
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <a class="btn btn-danger btn-sm" href="/guest/viewByType/?type=MTG">Back</a>
                     </div>
-
-
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <a class="btn btn-danger btn-sm" href="/guest/viewByType/?type=MTG">Back</a>
-                        </div>
-                    </div>
-
-                </form>
+                </div>
             </div>
             <div class="col-4">
                 <img th:src="${mtgCard.image_uri}"/>

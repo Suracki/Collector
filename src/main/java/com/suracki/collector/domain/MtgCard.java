@@ -4,6 +4,7 @@ import com.suracki.collector.external.dto.ScryfallCard;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 @Entity
 @Table(name="MtgCard")
@@ -68,7 +69,7 @@ public class MtgCard {
     }
 
     public String getSet_code() {
-        return set_code;
+        return set_code.toUpperCase(Locale.ROOT);
     }
 
     public void setSet_code(String set_code) {
