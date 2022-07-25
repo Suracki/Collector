@@ -58,6 +58,16 @@
             </tbody>
         </table>
 
+        <div class="form-group">
+                <th:block th:if="${firstPage != 'true'}">
+                    <a class="btn btn-danger btn-sm" href="/guest/viewPagedBack"><-</a>
+                </th:block>
+                Page <td th:text="${page}"></td>
+                <th:block th:if="${lastPage != 'true'}">
+                    <a class="btn btn-danger btn-sm" href="/guest/viewPaged">-></a>
+                </th:block>
+        </div>
+
     </div>
 </div>
 </body>

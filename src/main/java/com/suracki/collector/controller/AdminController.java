@@ -34,7 +34,7 @@ public class AdminController {
             SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
             return "home";
         }
-        return adminService.home(model);
+        return adminService.manage(model);
     }
 
     @RequestMapping("/admin/manageByType")
@@ -46,7 +46,19 @@ public class AdminController {
             SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
             return "home";
         }
-        return adminService.homeFiltered(type, model);
+        return adminService.manageByType(type, model);
+    }
+
+    @GetMapping("/admin/managePaged")
+    public String viewPaged(Model model) {
+        logger.info("User connected to /guest/viewPaged endpoint with type");
+        return adminService.managePaged(model);
+    }
+
+    @GetMapping("/admin/managePagedBack")
+    public String viewPagedBack(Model model) {
+        logger.info("User connected to /guest/viewPaged endpoint with type");
+        return adminService.managePagedBack(model);
     }
 
     @RequestMapping("/admin/addItem")
@@ -119,14 +131,5 @@ public class AdminController {
         return adminService.cardDetails(model, set_code, collectors_number);
     }
 
-//    @GetMapping("/admin/testScry/")
-//    public String testScryfall(Model model) {
-//        Scryfall scryfall = new Scryfall();
-//        ScryfallCard card = scryfall.getCardInfo("ori", 60);
-//        System.out.println("Name: " + card.getName());
-//        System.out.println("Set: " + card.getSet_name());
-//        System.out.println("Value: " + card.getPrices().get("eur") + " EUR");
-//        return "home";
-//    }
 
 }

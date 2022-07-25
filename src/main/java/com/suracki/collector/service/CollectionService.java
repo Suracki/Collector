@@ -7,22 +7,19 @@ import com.suracki.collector.external.dto.ScryfallCard;
 import com.suracki.collector.repository.ItemRepository;
 import com.suracki.collector.repository.LocationRepository;
 import com.suracki.collector.repository.MtgCardRepository;
+import com.suracki.collector.security.SessionDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CollectionService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(CollectionService.class);
+
 
     public CollectionService(ItemRepository itemRepository, LocationRepository locationRepository,
                              MtgCardRepository mtgCardRepository) {
@@ -100,24 +97,122 @@ public class CollectionService extends BaseService {
 
     public String viewByType(String type, Model model) {
         super.addTypes(model);
-        model.addAttribute("collection", itemRepository.findByType(type));
-        return "guest/view";
+        SessionDetails sessionDetails = getSession();
+        sessionDetails.setLastViewedType(type);
+        sessionDetails.setLastPageNumber(0);
+        return viewPaged(model);
+    }
+
+    public String viewPaged(Model model) {
+        super.addTypes(model);
+        SessionDetails sessionDetails = getSession();
+        String type = sessionDetails.getLastViewedType();
+        Integer page = sessionDetails.getLastPageNumber() + 1;
+
+        List<Item> items = itemRepository.findByType(type);
+        List<Item> displayItems;
+
+        int stId = page*10 - 10;
+        int endId = page*10;
+
+        if (page == 1) {
+            model.addAttribute("firstPage", "true");
+        }
+        else {
+            model.addAttribute("firstPage", "false");
+        }
+
+        if (page*10 > items.size()-1) {
+            model.addAttribute("lastPage", "true");
+        }
+        else {
+            model.addAttribute("lastPage", "false");
+        }
+
+        if (items.size() < stId) {
+            logger.error("viewPaged attempting to display page too far ahead");
+            model.addAttribute("page", page);
+            model.addAttribute("collection", new ArrayList<Item>());
+            return "guest/viewPaged";
+        }
+        else if (items.size() < endId) {
+            displayItems = items.subList(stId,items.size());
+            logger.debug("viewPaged loaded " + items.size() + " items.");
+            model.addAttribute("page", page);
+            model.addAttribute("collection", displayItems);
+        }
+        else {
+            displayItems = items.subList(stId,endId);
+            logger.debug("viewPaged loaded " + items.size() + " items.");
+            model.addAttribute("page", page);
+            model.addAttribute("collection", displayItems);
+        }
+        sessionDetails.setLastPageNumber(page);
+        return "guest/viewPaged";
+
+    }
+
+    public String viewPagedBack(Model model) {
+        super.addTypes(model);
+        SessionDetails sessionDetails = getSession();
+        String type = sessionDetails.getLastViewedType();
+        Integer page = sessionDetails.getLastPageNumber() - 1;
+
+        List<Item> items = itemRepository.findByType(type);
+        List<Item> displayItems;
+
+        int stId = page*10 - 10;
+        int endId = page*10;
+
+        if (page == 1) {
+            model.addAttribute("firstPage", "true");
+            model.addAttribute("lastPage", "false");
+        }
+        else {
+            model.addAttribute("firstPage", "false");
+            model.addAttribute("lastPage", "false");
+        }
+
+        if (items.size() < stId) {
+            logger.error("viewPaged attempting to display page too far ahead");
+            model.addAttribute("page", page);
+            model.addAttribute("collection", new ArrayList<Item>());
+            return "guest/viewPaged";
+        }
+        else if (items.size() < endId) {
+            displayItems = items.subList(stId,items.size());
+            logger.debug("viewPaged loaded " + items.size() + " items.");
+            model.addAttribute("page", page);
+            model.addAttribute("collection", displayItems);
+        }
+        else {
+            displayItems = items.subList(stId,endId);
+            logger.debug("viewPaged loaded " + items.size() + " items.");
+            model.addAttribute("page", page);
+            model.addAttribute("collection", displayItems);
+        }
+        sessionDetails.setLastPageNumber(page);
+        return "guest/viewPaged";
+
     }
 
     public String viewByName(String name, Model model) {
         super.addTypes(model);
+        SessionDetails sessionDetails = getSession();
         model.addAttribute("collection", itemRepository.findByName(name));
         return "guest/view";
     }
 
     public String viewByDetail(String detail, Model model) {
         super.addTypes(model);
+        SessionDetails sessionDetails = getSession();
         model.addAttribute("collection", itemRepository.findByDetail(detail));
         return "guest/view";
     }
 
     public String cardDetails(Model model, String set_code, String collectors_number) {
         MtgCard mtgCard = mtgCardRepository.findBySetAndCollectorNumber(set_code, collectors_number);
+        SessionDetails sessionDetails = getSession();
         if (mtgCard == null) {
             ScryfallCard scryfallCard = scryfall.getCardInfo(set_code, Integer.parseInt(collectors_number));
             mtgCard = new MtgCard(scryfallCard);

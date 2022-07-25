@@ -13,16 +13,24 @@
         <div class="col-6">
             Filter by type:
             <th:block th:each="type :  ${types}">
-                <a th:href="${'/guest/viewByType/?type=' + type}"/>
+                <a th:href="${'/admin/manageByType/?type=' + type}"/>
                 <td th:text="${type}"></td>
-                </a>&nbsp;|
+                </a>&nbsp;|&nbsp;
             </th:block>
-            <a th:href="${'/'}"/>
-            <td th:text="Home"></td></a>
+            <a th:href="${'/admin/manage'}"/>
+            <td th:text="All"></td></a>
+        </div>
+
+        <div class="col-6 text-right">
+            Logged in user: <b th:inline="text"  class="user"> [[${#httpServletRequest.remoteUser}]] </b>
+            <form th:action="@{/app-logout}" method="POST" name="logoutForm">
+                <input type="submit" value="Logout"/>
+            </form>
         </div>
     </div>
     <div class="row"><h2>Items</h2></div>
     <div class="row">
+        <a href="/admin/addItem" class="btn btn-primary btn-sm">Add New</a>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -52,11 +60,23 @@
                 </td>
                 <td th:text="${item.type}"></td>
                 <td style="width: 15%" class="text-center">
-                    <th:block th:if="${item.type == 'MTG'}"><a th:href="@{/guest/cardDetails?set_code={set}&collectors_number={col}(set=${item.detail},col=${item.itemNumber})}">Card Details</a></th:block>
+                    <a th:href="@{/admin/updateItem/{id}(id=${item.itemId})}">Edit</a>&nbsp;|&nbsp;
+                    <a th:href="@{/admin/deleteItem/{id}(id=${item.itemId})}">Delete</a>
+                    <th:block th:if="${item.type == 'MTG'}"><a th:href="@{/guest/cardDetails?set_code={set}&collectors_number={col}(set=${item.detail},col=${item.itemNumber})}">&nbsp;|&nbsp;Card Details</a></th:block>
                 </td>
             </tr>
             </tbody>
         </table>
+
+        <div class="form-group">
+            <th:block th:if="${firstPage != 'true'}">
+                <a class="btn btn-danger btn-sm" href="/admin/managePagedBack"><-</a>
+            </th:block>
+            Page <td th:text="${page}"></td>
+            <th:block th:if="${lastPage != 'true'}">
+                <a class="btn btn-danger btn-sm" href="/admin/managePaged">-></a>
+            </th:block>
+        </div>
 
     </div>
 </div>
