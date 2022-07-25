@@ -2,7 +2,6 @@ package com.suracki.collector.service;
 
 import com.suracki.collector.datamonitor.Monitor;
 import com.suracki.collector.domain.Item;
-import com.suracki.collector.domain.Location;
 import com.suracki.collector.domain.MtgCard;
 import com.suracki.collector.domain.User;
 import com.suracki.collector.external.Scryfall;
@@ -14,7 +13,6 @@ import com.suracki.collector.repository.UserRepository;
 import com.suracki.collector.security.SessionDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +21,6 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class AdminService extends BaseService{
@@ -68,14 +65,7 @@ public class AdminService extends BaseService{
     public String manage(Model model) {
         model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
         model.addAttribute("items", itemRepository.findAll());
-        //return "admin/manage";
         return manageByType("all", model);
-    }
-
-    public String homeFiltered(String type, Model model) {
-        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
-        model.addAttribute("items", itemRepository.findByType(type));
-        return "admin/manage";
     }
 
     public String manageByType(String type, Model model) {
