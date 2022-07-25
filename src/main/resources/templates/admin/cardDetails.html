@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>MTG Card Details</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" >
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            Filter by type:
+            <th:block th:each="type :  ${types}">
+                <a th:href="${'/admin/manageByType/?type=' + type}"/>
+                <td th:text="${type}"></td>
+                </a>&nbsp;|&nbsp;
+            </th:block>
+            <a th:href="${'/admin/manage'}"/>
+            <td th:text="All"></td></a>
+        </div>
+
+        <div class="col-6 text-right">
+            Logged in user: <b th:inline="text"  class="user"> [[${#httpServletRequest.remoteUser}]] </b>
+            <form th:action="@{/app-logout}" method="POST" name="logoutForm">
+                <input type="submit" value="Logout"/>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <h2>MTG Card Details</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-7">
+                <!--                -->
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row"><h5>Name:</h5></th>
+                        <th th:text="${mtgCard.name}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Set Code:</h5></th>
+                        <th th:text="${mtgCard.set_code}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Set Name:</h5></th>
+                        <th th:text="${mtgCard.set_name}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Collector's Number:</h5></th>
+                        <th th:text="${mtgCard.collector_number}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Rarity:</h5></th>
+                        <th th:text="${mtgCard.rarity}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Current Price (€):</h5></th>
+                        <th th:text="${mtgCard.price}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Price last updated:</h5></th>
+                        <th th:text="${mtgCard.priceUpdateTime}" scope="col"></th>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5>Buy/Sell:</h5></th>
+                        <td><a th:href="@{https://www.cardmarket.com/en/Magic/Products/Search?searchString={name}(name=${mtgCard.name})}">Cardmarket</a></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <a class="btn btn-danger btn-sm" href="/admin/manageByType/?type=MTG">Back</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <img th:src="${mtgCard.image_uri}"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

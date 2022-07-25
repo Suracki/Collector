@@ -27,10 +27,10 @@
             <thead>
             <tr>
                 <th>Id</th>
+                <th>Quantity</th>
                 <th>Name</th>
                 <th>Number</th>
                 <th>Condition</th>
-                <th>Quantity</th>
                 <th>Comments</th>
                 <th>Detail</th>
                 <th>Type</th>
@@ -51,6 +51,9 @@
                     <a th:href="@{/guest/filterDetail/?detail={detail}(detail=${item.detail})}"><p th:text="${item.detail}"></a>
                 </td>
                 <td th:text="${item.type}"></td>
+                <td style="width: 15%" class="text-center">
+                    <th:block th:if="${item.type == 'MTG'}"><a th:href="@{/guest/cardDetails?set_code={set}&collectors_number={col}(set=${item.detail},col=${item.itemNumber})}">Card Details</a></th:block>
+                </td>
             </tr>
             </tbody>
         </table>

@@ -59,6 +59,7 @@
 				<td style="width: 15%" class="text-center">
 					<a th:href="@{/admin/updateItem/{id}(id=${item.itemId})}">Edit</a>&nbsp;|&nbsp;
 					<a th:href="@{/admin/deleteItem/{id}(id=${item.itemId})}">Delete</a>
+					<th:block th:if="${item.type == 'MTG'}">&nbsp;|&nbsp;<a th:href="@{/admin/cardDetails?set_code={set}&collectors_number={col}(set=${item.detail},col=${item.itemNumber})}">Card Details</a></th:block>
 				</td>
 			</tr>
 			</tbody>

@@ -10,8 +10,14 @@
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <!--			Navigation Here-->
-            <a href="/">Patient Notes</a>
+            Filter by type:
+            <th:block th:each="type :  ${types}">
+                <a th:href="${'/guest/viewByType/?type=' + type}"/>
+                <td th:text="${type}"></td>
+                </a>&nbsp;|
+            </th:block>
+            <a th:href="${'/'}"/>
+            <td th:text="Home"></td></a>
         </div>
     </div>
     <div class="row">

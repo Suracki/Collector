@@ -1,10 +1,15 @@
 package com.suracki.collector.service;
 
+import com.suracki.collector.datamonitor.Monitor;
 import com.suracki.collector.domain.Item;
 import com.suracki.collector.domain.Location;
+import com.suracki.collector.domain.MtgCard;
 import com.suracki.collector.domain.User;
+import com.suracki.collector.external.Scryfall;
+import com.suracki.collector.external.dto.ScryfallCard;
 import com.suracki.collector.repository.ItemRepository;
 import com.suracki.collector.repository.LocationRepository;
+import com.suracki.collector.repository.MtgCardRepository;
 import com.suracki.collector.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,23 +22,27 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 
 @Service
-public class AdminService {
+public class AdminService extends BaseService{
 
     private UserRepository userRepository;
-    private ItemRepository itemRepository;
-    private LocationRepository locationRepository;
+
+    private final Monitor monitor;
+    private Scryfall scryfall;
 
 
     private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
 
     public AdminService(UserRepository userRepository,
                         ItemRepository itemRepository,
-                        LocationRepository locationRepository) {
+                        LocationRepository locationRepository,
+                        MtgCardRepository mtgCardRepository) {
+        super(itemRepository, locationRepository, mtgCardRepository);
         this.userRepository = userRepository;
-        this.itemRepository = itemRepository;
-        this.locationRepository = locationRepository;
+        monitor = new Monitor(mtgCardRepository);
+        scryfall = new Scryfall();
         logger.info("AdminService created");
         setupAdmin();
     }
@@ -75,6 +84,17 @@ public class AdminService {
     public String validate(@Valid Item item, BindingResult result, Model model) {
         if (!result.hasErrors()) {
             itemRepository.save(item);
+            if (item.getType().equals("MTG")) {
+                if (mtgCardRepository.findBySetAndCollectorNumber(item.getDetail(), String.valueOf(item.getItemNumber())) == null) {
+                    logger.info("Card details not found in MtgCardRepository: " + item.getItemName());
+                    ScryfallCard scryfallCard = scryfall.getCardInfo(item.getDetail(), item.getItemNumber());
+                    MtgCard mtgCard = new MtgCard(scryfallCard);
+                    mtgCardRepository.save(mtgCard);
+                }
+                else {
+                    logger.info("Card details already stored in MtgCardRepository: " + item.getItemName());
+                }
+            }
             model.addAttribute("items", itemRepository.findAll());
             return "redirect:/admin/manage";
         }
@@ -104,5 +124,17 @@ public class AdminService {
         model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
         model.addAttribute("items", itemRepository.findAll());
         return "admin/manage";
+    }
+
+    public String cardDetails(Model model, String set_code, String collectors_number) {
+        MtgCard mtgCard = mtgCardRepository.findBySetAndCollectorNumber(set_code, collectors_number);
+        if (mtgCard == null) {
+            ScryfallCard scryfallCard = scryfall.getCardInfo(set_code, Integer.parseInt(collectors_number));
+            mtgCard = new MtgCard(scryfallCard);
+            mtgCardRepository.save(mtgCard);
+        }
+        model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
+        model.addAttribute("mtgCard", mtgCard);
+        return "admin/cardDetails";
     }
 }
