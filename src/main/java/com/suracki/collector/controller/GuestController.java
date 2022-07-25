@@ -33,6 +33,18 @@ public class GuestController {
         return collectionService.viewByType(type, model);
     }
 
+    @GetMapping("/guest/viewPaged")
+    public String viewPaged(Model model) {
+        logger.info("User connected to /guest/viewPaged endpoint with type");
+        return collectionService.viewPaged(model);
+    }
+
+    @GetMapping("/guest/viewPagedBack")
+    public String viewPagedBack(Model model) {
+        logger.info("User connected to /guest/viewPaged endpoint with type");
+        return collectionService.viewPagedBack(model);
+    }
+
     @GetMapping("/guest/filterName")
     public String viewFilterName(@RequestParam(value="name") String name, Model model) {
         logger.info("User connected to /guest/filterName/{name} endpoint with name " + name);
