@@ -23,12 +23,11 @@ import java.util.*;
 public class CollectionService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(CollectionService.class);
-    Map<String, SessionDetails> sessions;
+
 
     public CollectionService(ItemRepository itemRepository, LocationRepository locationRepository,
                              MtgCardRepository mtgCardRepository) {
         super(itemRepository, locationRepository, mtgCardRepository);
-        sessions = new HashMap<>();
         logger.info("CollectionService created");
         dummySetup();
     }
@@ -100,28 +99,11 @@ public class CollectionService extends BaseService {
         return "guest/viewHome";
     }
 
-    private SessionDetails getSession() {
-        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-        if (sessions.get(sessionId) == null ){
-            sessions.put(sessionId, new SessionDetails());
-        }
-        return sessions.get(sessionId);
-    }
-
     public String viewByType(String type, Model model) {
         super.addTypes(model);
         SessionDetails sessionDetails = getSession();
         sessionDetails.setLastViewedType(type);
         sessionDetails.setLastPageNumber(0);
-
-//        List<Item> items = itemRepository.findByType(type);
-//        if (items.size() > 10) {
-//            items = items.subList(0,10);
-//            logger.debug("viewByType loaded " + items.size() + " items.");
-//            model.addAttribute("collection", items);
-//            return "guest/viewPaged";
-//        }
-//        model.addAttribute("collection", itemRepository.findByType(type));
         return viewPaged(model);
     }
 
