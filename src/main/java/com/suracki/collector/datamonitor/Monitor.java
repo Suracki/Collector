@@ -19,6 +19,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Monitor thread runs in the background, allows tasks to be scheduled to run
+ * Currently set to update MTG card details weekly (for updated price info)
+ */
 public class Monitor extends Thread {
 
     private static final Logger logger = LogManager.getLogger(HomeController.class);
