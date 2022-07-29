@@ -46,7 +46,7 @@ public class Scryfall {
             return scryfallCard;
         }
         catch (IOException e) {
-        logger.error("addToVisitedLocations external call failed: " + e);
+        logger.error("getCardInfo external call failed: " + e);
         return null;
     }
     }

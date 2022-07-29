@@ -5,12 +5,15 @@
     <meta charset="utf-8"/>
     <title>View Collection</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
 </head>
 <body>
 
-<div class="container">
-    <div class="row">
-        <div class="col-6">
+<div class="container-collector" id="main">
+    <div class="continer-content" id="content_flex_top_collector">
+        <div id="topL-collector">
+            <h4>
             Filter by type:
             <th:block th:each="type :  ${types}">
                 <a th:href="${'/guest/viewByType/?type=' + type}"/>
@@ -19,46 +22,59 @@
             </th:block>
             <a th:href="${'/'}"/>
             <td th:text="Home"></td></a>
+            </h4>
         </div>
     </div>
-    <div class="row"><h2>Items</h2></div>
-    <div class="row">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Quantity</th>
-                <th>Name</th>
-                <th>Number</th>
-                <th>Condition</th>
-                <th>Comments</th>
-                <th>Detail</th>
-                <th>Type</th>
-                <th>Storage</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="item : ${collection}">
-                <td style="width: 10%" th:text="${item.itemId}"></td>
-                <td th:text="${item.itemQuantity}"></td>
-                <td>
-                    <a th:href="@{/guest/filterName/?name={name}(name=${item.itemName})}"><p th:text="${item.itemName}"></a>
-                </td>
-                <td th:text="${item.itemNumber}"></td>
-                <td th:text="${item.itemCondition}"></td>
-                <td th:text="${item.comments}"></td>
-                <td>
-                    <a th:href="@{/guest/filterDetail/?detail={detail}(detail=${item.detail})}"><p th:text="${item.detail}"></a>
-                </td>
-                <td th:text="${item.type}"></td>
-                <td style="width: 15%" class="text-center">
-                    <th:block th:if="${item.type == 'MTG'}"><a th:href="@{/guest/cardDetails?set_code={set}&collectors_number={col}(set=${item.detail},col=${item.itemNumber})}">Card Details</a></th:block>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="continer-content" id="content_flex">
 
+        <div class="row">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Quantity</th>
+                    <th>Name</th>
+                    <th>Number</th>
+                    <th>Condition</th>
+                    <th>Comments</th>
+                    <th>Detail</th>
+                    <th>Type</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${collection}">
+                    <td style="width: 10%" th:text="${item.itemId}"></td>
+                    <td th:text="${item.itemQuantity}"></td>
+                    <td>
+                        <a th:href="@{/guest/filterName/?name={name}(name=${item.itemName})}"><p th:text="${item.itemName}"></a>
+                    </td>
+                    <td th:text="${item.itemNumber}"></td>
+                    <td th:text="${item.itemCondition}"></td>
+                    <td th:text="${item.comments}"></td>
+                    <td>
+                        <a th:href="@{/guest/filterDetail/?detail={detail}(detail=${item.detail})}"><p th:text="${item.detail}"></a>
+                    </td>
+                    <td th:text="${item.type}"></td>
+                    <td style="width: 15%" class="text-center">
+                        <th:block th:if="${item.type == 'MTG'}"><a th:href="@{/guest/cardDetails?set_code={set}&collectors_number={col}(set=${item.detail},col=${item.itemNumber})}">Card Details</a></th:block>
+                        <th:block th:if="${item.type == 'LEGO'}"><a th:href="@{https://www.bricklink.com/v2/catalog/catalogitem.page?S={col}-1(col=${item.itemNumber})}">Bricklink</a></th:block>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
     </div>
+
+    <div id="btmL">
+        <h2>Find me on social media</h2>
+        <h3><strong>A new project idea?</strong> Contact me!</h3>
+        <a href="https://twitter.com/Suracki" class="fa fa-twitter"></a>
+        <a href="https://github.com/Suracki" class="fa fa-github"></a>
+        <a href="https://www.linkedin.com/in/simon-linford/" class="fa fa-linkedin"></a>
+    </div>
+    <div id="btmR"></div>
 </div>
 </body>
 </html>

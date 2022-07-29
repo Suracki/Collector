@@ -4,20 +4,24 @@
 <head>
     <meta charset="utf-8"/>
     <title>MTG Card Details</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" >
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
 </head>
 <body>
-<div class="container">
-    <div class="row">
+<div class="container-collector" id="main">
+    <div class="container-content" id="content_flex_top_collector">
         <div class="col-6">
-            Filter by type:
-            <th:block th:each="type :  ${types}">
-                <a th:href="${'/admin/manageByType/?type=' + type}"/>
-                <td th:text="${type}"></td>
-                </a>&nbsp;|&nbsp;
-            </th:block>
-            <a th:href="${'/admin/manage'}"/>
-            <td th:text="All"></td></a>
+            <h4>
+                Filter by type:
+                <th:block th:each="type :  ${types}">
+                    <a th:href="${'/admin/manageByType/?type=' + type}"/>
+                    <td th:text="${type}"></td>
+                    </a>&nbsp;|&nbsp;
+                </th:block>
+                <a th:href="${'/admin/manage'}"/>
+                <td th:text="All"></td></a>
+            </h4>
         </div>
 
         <div class="col-6 text-right">
@@ -27,62 +31,73 @@
             </form>
         </div>
     </div>
-    <div class="row">
-        <h2>MTG Card Details</h2>
-    </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-7">
-                <!--                -->
-                <table class="table table-striped">
-                    <tbody>
-                    <tr>
-                        <th scope="row"><h5>Name:</h5></th>
-                        <th th:text="${mtgCard.name}" scope="col"></th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><h5>Set Code:</h5></th>
-                        <th th:text="${mtgCard.set_code}" scope="col"></th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><h5>Set Name:</h5></th>
-                        <th th:text="${mtgCard.set_name}" scope="col"></th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><h5>Collector's Number:</h5></th>
-                        <th th:text="${mtgCard.collector_number}" scope="col"></th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><h5>Rarity:</h5></th>
-                        <th th:text="${mtgCard.rarity}" scope="col"></th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><h5>Current Price (€):</h5></th>
-                        <th th:text="${mtgCard.price}" scope="col"></th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><h5>Price last updated:</h5></th>
-                        <th th:text="${mtgCard.priceUpdateTime}" scope="col"></th>
-                    </tr>
-                    <tr>
-                        <th scope="row"><h5>Buy/Sell:</h5></th>
-                        <td><a th:href="@{https://www.cardmarket.com/en/Magic/Products/Search?searchString={name}(name=${mtgCard.name})}">Cardmarket</a></td>
-                    </tr>
+    <div class="continer-content" id="content_flex">
 
-                    </tbody>
-                </table>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <a class="btn btn-danger btn-sm" href="/admin/manageByType/?type=MTG">Back</a>
+        <div class="container">
+            <h2>MTG Card Details</h2>
+            <div class="row">
+                <div class="col-7">
+                    <!--                -->
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th scope="row">Name:</th>
+                            <th th:text="${mtgCard.name}" scope="col"></th>
+                        </tr>
+                        <tr>
+                            <th scope="row">Set Code:</th>
+                            <th th:text="${mtgCard.set_code}" scope="col"></th>
+                        </tr>
+                        <tr>
+                            <th scope="row">Set Name:</th>
+                            <th th:text="${mtgCard.set_name}" scope="col"></th>
+                        </tr>
+                        <tr>
+                            <th scope="row">Collector's Number:</th>
+                            <th th:text="${mtgCard.collector_number}" scope="col"></th>
+                        </tr>
+                        <tr>
+                            <th scope="row">Rarity:</th>
+                            <th th:text="${mtgCard.rarity}" scope="col"></th>
+                        </tr>
+                        <tr>
+                            <th scope="row">Current Price (€):</th>
+                            <th th:text="${mtgCard.price}" scope="col"></th>
+                        </tr>
+                        <tr>
+                            <th scope="row">Price last updated:</th>
+                            <th th:text="${mtgCard.priceUpdateTime}" scope="col"></th>
+                        </tr>
+                        <tr>
+                            <th scope="row">Buy/Sell:</th>
+                            <td><a th:href="@{https://www.cardmarket.com/en/Magic/Products/Search?searchString={name}(name=${mtgCard.name})}">Cardmarket</a></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <a class="btn btn-danger btn-sm" href="/admin/manageByType/?type=MTG">Back</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-4">
-                <img th:src="${mtgCard.image_uri}"/>
+                <div class="col-4">
+                    <img th:src="${mtgCard.image_uri}"/>
+                </div>
             </div>
         </div>
+
     </div>
+
+    <div id="btmL">
+        <h2>Find me on social media</h2>
+        <h3><strong>A new project idea?</strong> Contact me!</h3>
+        <a href="https://twitter.com/Suracki" class="fa fa-twitter"></a>
+        <a href="https://github.com/Suracki" class="fa fa-github"></a>
+        <a href="https://www.linkedin.com/in/simon-linford/" class="fa fa-linkedin"></a>
+    </div>
+    <div id="btmR"></div>
 
 </div>
 </body>

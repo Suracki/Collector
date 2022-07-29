@@ -7,13 +7,14 @@ import com.suracki.collector.external.dto.ScryfallCard;
 import com.suracki.collector.external.retrofit.ScryfallRetro;
 import com.suracki.collector.repository.ItemRepository;
 import com.suracki.collector.repository.MtgCardRepository;
+import com.suracki.collector.security.SessionDetails;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.util.StopWatch;
 
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -21,21 +22,23 @@ import java.util.concurrent.TimeUnit;
 public class Monitor extends Thread {
 
     private static final Logger logger = LogManager.getLogger(HomeController.class);
-    private static final long trackingPollingInterval = TimeUnit.HOURS.toSeconds(24);
+    private static final long trackingPollingInterval = TimeUnit.DAYS.toSeconds(7);
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private boolean stop = false;
+    protected static Map<String, SessionDetails> sessions;
 
-    private LocalDateTime lastUpdate;
 
     private MtgCardRepository mtgCardRepository;
 
 
-    public Monitor(MtgCardRepository mtgCardRepository) {
+    public Monitor(MtgCardRepository mtgCardRepository, Map<String, SessionDetails> sessions) {
         this.mtgCardRepository = mtgCardRepository;
+        this.sessions = sessions;
         executorService.submit(this);
     }
 
     public void stopMonitor() {
+        logger.info("Shutdown Thread called stopMonitor");
         stop = true;
         executorService.shutdownNow();
     }
@@ -49,9 +52,12 @@ public class Monitor extends Thread {
                 logger.info("Monitor stopping");
                 break;
             }
+
             logger.info("Requesting price update");
-            //updatePrices();
+            updatePrices();
             logger.info("Price update completed.");
+
+
             try {
                 logger.info("Tracker sleeping");
                 TimeUnit.SECONDS.sleep(trackingPollingInterval);
@@ -62,19 +68,30 @@ public class Monitor extends Thread {
 
     }
 
+    public void updatePrice(MtgCard mtgCard) {
+        Scryfall scryfall = new Scryfall();
+        ScryfallCard scryfallCard = scryfall.getCardInfo(mtgCard.getSet_code(), Integer.parseInt(mtgCard.getCollector_number()));
+        mtgCard.setPrice(scryfallCard.getPrices().get("eur"));
+        mtgCard.setPriceUpdateTime(LocalDateTime.now());
+        mtgCardRepository.save(mtgCard);
+    }
+
     private void updatePrices() {
         List<MtgCard> mtgCards = mtgCardRepository.findAll();
         if (mtgCards == null) {
             logger.info("Monitor found no card records.");
             return;
         }
-        logger.info("Monitor found " + mtgCards.size() + " card records.");
+        logger.info("Monitor found " + mtgCards.size() + " card records. Updating any card details older than 7 days.");
         Scryfall scryfall = new Scryfall();
         mtgCards.forEach( card -> {
-            ScryfallCard scryfallCard = scryfall.getCardInfo(card.getSet_code(), Integer.parseInt(card.getCollector_number()));
-            card.setPrice(scryfallCard.getPrices().get("eur"));
-            card.setPriceUpdateTime(LocalDateTime.now());
-            mtgCardRepository.save(card);
+            if (Duration.between(card.getPriceUpdateTime(), LocalDateTime.now()).toDays() > 7) {
+                ScryfallCard scryfallCard = scryfall.getCardInfo(card.getSet_code(), Integer.parseInt(card.getCollector_number()));
+                card.setPrice(scryfallCard.getPrices().get("eur"));
+                card.setPriceUpdateTime(LocalDateTime.now());
+                mtgCardRepository.save(card);
+                logger.info("Updated card: " + card.getSet_code() + " " + card.getCollector_number());
+            }
         });
     }
 }

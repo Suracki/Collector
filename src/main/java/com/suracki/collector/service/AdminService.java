@@ -18,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import javax.validation.Valid;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -27,8 +30,7 @@ public class AdminService extends BaseService{
 
     private UserRepository userRepository;
 
-    private final Monitor monitor;
-    private Scryfall scryfall;
+    private static Monitor monitor;
 
 
     private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
@@ -39,10 +41,19 @@ public class AdminService extends BaseService{
                         MtgCardRepository mtgCardRepository) {
         super(itemRepository, locationRepository, mtgCardRepository);
         this.userRepository = userRepository;
-        monitor = new Monitor(mtgCardRepository);
         scryfall = new Scryfall();
+        monitor = new Monitor(mtgCardRepository, sessions);
         logger.info("AdminService created");
+        addShutDownHook();
         setupAdmin();
+    }
+
+    private void addShutDownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                monitor.stopMonitor();
+            }
+        });
     }
 
     private void setupAdmin() {
@@ -237,6 +248,12 @@ public class AdminService extends BaseService{
             ScryfallCard scryfallCard = scryfall.getCardInfo(set_code, Integer.parseInt(collectors_number));
             mtgCard = new MtgCard(scryfallCard);
             mtgCardRepository.save(mtgCard);
+        }
+
+        //Request price update if
+        if (Duration.between(mtgCard.getPriceUpdateTime(), LocalDateTime.now()).toDays() > 7) {
+            logger.info("Requesting update for " + mtgCard.getName() + " - " + mtgCard.getSet_name());
+            monitor.updatePrice(mtgCard);
         }
         model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
         model.addAttribute("mtgCard", mtgCard);
