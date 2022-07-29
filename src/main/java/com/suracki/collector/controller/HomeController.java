@@ -25,7 +25,7 @@ public class HomeController {
     public String home(Model model)
     {
         logger.info("User connected to root home endpoint");
-        return "home";
+        return "index";
     }
 
 }

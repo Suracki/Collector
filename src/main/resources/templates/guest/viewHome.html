@@ -4,12 +4,15 @@
 <head>
     <meta charset="utf-8"/>
     <title>View Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-6">
+<div class="container-collector" id="main">
+    <div class="container-content" id="content_flex_top_collector">
+        <div id="topL-collector">
+            <h4>
             Filter by type:
             <th:block th:each="type :  ${types}">
                 <a th:href="${'/guest/viewByType/?type=' + type}"/>
@@ -18,23 +21,40 @@
             </th:block>
             <a th:href="${'/'}"/>
             <td th:text="Home"></td></a>
+            </h4>
         </div>
     </div>
-    <div class="row">
-        <h2>Select Collection</h2>
+
+    <div class="continer-content" id="content_flex">
+
+        <article id="rgt">
+            <div class="row">
+                <h2>Select Collection</h2>
+            </div>
+
+            <div class="row">
+                <form action="#" th:action="@{/view/type}" th:object="${type}" method="post" class="form-horizontal" style="width: 100%">
+
+                    <tr th:each="type :  ${types}">
+                        <a th:href="${'viewByType/?type=' + type}"/>
+                        <td th:text="${type}"></td>
+                        </a><br>
+                    </tr>
+
+                </form>
+            </div>
+        </article>
     </div>
-
-    <div class="row">
-        <form action="#" th:action="@{/view/type}" th:object="${type}" method="post" class="form-horizontal" style="width: 100%">
-
-            <tr th:each="type :  ${types}">
-                <a th:href="${'viewByType/?type=' + type}"/>
-                <td th:text="${type}"></td>
-                </a><br>
-            </tr>
-
-        </form>
+    <div id="btmL">
+        <h2>Find me on social media</h2>
+        <h3><strong>A new project idea?</strong> Contact me!</h3>
+        <a href="https://twitter.com/Suracki" class="fa fa-twitter"></a>
+        <a href="https://github.com/Suracki" class="fa fa-github"></a>
+        <a href="https://www.linkedin.com/in/simon-linford/" class="fa fa-linkedin"></a>
     </div>
+    <div id="btmR"></div>
+
+
 
 </div>
 </body>

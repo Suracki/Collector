@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simon Linford</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
+</head>
+<body>
+
+<div class="container-main" id="main">
+  <div id="topL">
+	<h2>Simon Linford<br><strong>&nbspJava Developer&nbsp</strong></h2>
+
+    <p><h4>Please imagine I wrote something meaningful here.<br>Nod and smile. Now, let's code.</h4></p>
+
+  </div>
+  <div id="topR">
+	<img th:src="@{/images/portrait.png}" id="pic" alt="portrait" title="portrait">
+  </div>
+  <div class="continer-content" id="content_flex">
+    <article id="lft">
+		<h1>&lt/&gt</h1>
+	</article>
+    <article id="rgt">
+      <strong>&nbspMy Projects&nbsp</strong>
+      <p>I write Java applications for the web. Here are a few examples of applications that I've worked on recently:</p>
+      <ul>
+        <li>Collection Manager: <a href="/guest/viewHome">View Collection</a> or <a href="/admin/manage">Manage Collection</a></li>
+        <li>OpenClassrooms Projects: <a href="https://github.com/Suracki/OC-Project-Index">View</a></li>
+        <li>Other projects to come</li>
+      </ul>
+      <p>Educational background:<br> BSc Computer Science from University of Kent at Canterbury
+      <br>Java Web Developer Diploma from OpenClassrooms</p>
+      <p>Current interests in development:<br>Java, Spring Boot, HTML, CSS & more</p>
+    </article> 
+  </div>
+  <div id="btmL">
+    <h2>Find me on social media</h2>
+    <h3><strong>A new project idea?</strong> Contact me!</h3> 
+    <a href="https://twitter.com/Suracki" class="fa fa-twitter"></a>
+    <a href="https://github.com/Suracki" class="fa fa-github"></a>
+    <a href="https://www.linkedin.com/in/simon-linford/" class="fa fa-linkedin"></a>
+  </div>
+  <div id="btmR"></div>
+</div>
+</body>
+</html>

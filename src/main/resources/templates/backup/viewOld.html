@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>View Collection</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            Filter by type:
+            <th:block th:each="type :  ${types}">
+                <a th:href="${'/guest/viewByType/?type=' + type}"/>
+                <td th:text="${type}"></td>
+                </a>&nbsp;|
+            </th:block>
+            <a th:href="${'/'}"/>
+            <td th:text="Home"></td></a>
+        </div>
+    </div>
+    <div class="row"><h2>Items</h2></div>
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Quantity</th>
+                <th>Name</th>
+                <th>Number</th>
+                <th>Condition</th>
+                <th>Comments</th>
+                <th>Detail</th>
+                <th>Type</th>
+                <th>Storage</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${collection}">
+                <td style="width: 10%" th:text="${item.itemId}"></td>
+                <td th:text="${item.itemQuantity}"></td>
+                <td>
+                    <a th:href="@{/guest/filterName/?name={name}(name=${item.itemName})}"><p th:text="${item.itemName}"></a>
+                </td>
+                <td th:text="${item.itemNumber}"></td>
+                <td th:text="${item.itemCondition}"></td>
+                <td th:text="${item.comments}"></td>
+                <td>
+                    <a th:href="@{/guest/filterDetail/?detail={detail}(detail=${item.detail})}"><p th:text="${item.detail}"></a>
+                </td>
+                <td th:text="${item.type}"></td>
+                <td style="width: 15%" class="text-center">
+                    <th:block th:if="${item.type == 'MTG'}"><a th:href="@{/guest/cardDetails?set_code={set}&collectors_number={col}(set=${item.detail},col=${item.itemNumber})}">Card Details</a></th:block>
+                    <th:block th:if="${item.type == 'LEGO'}"><a th:href="@{https://www.bricklink.com/v2/catalog/catalogitem.page?S={col}-1(col=${item.itemNumber})}">Bricklink</a></th:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+</body>
+</html>

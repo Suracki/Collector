@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>View Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            Filter by type:
+            <th:block th:each="type :  ${types}">
+                <a th:href="${'/guest/viewByType/?type=' + type}"/>
+                <td th:text="${type}"></td>
+                </a>&nbsp;|
+            </th:block>
+            <a th:href="${'/'}"/>
+            <td th:text="Home"></td></a>
+        </div>
+    </div>
+    <div class="row">
+        <h2>Select Collection</h2>
+    </div>
+
+    <div class="row">
+        <form action="#" th:action="@{/view/type}" th:object="${type}" method="post" class="form-horizontal" style="width: 100%">
+
+            <tr th:each="type :  ${types}">
+                <a th:href="${'viewByType/?type=' + type}"/>
+                <td th:text="${type}"></td>
+                </a><br>
+            </tr>
+
+        </form>
+    </div>
+
+</div>
+</body>
+</html>
