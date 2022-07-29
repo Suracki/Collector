@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+    collectordatabase:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: 'password'
+            MYSQL_DATABASE: 'collector'
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+        ports:
+            - "3384:3306"
+        volumes:
+            - collector-database:/var/lib/collectordb
+        container_name: collectordatabase
+        networks:
+            - system
+    collectorapp:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        container_name: collectorapp
+        depends_on:
+            collectordatabase:
+                condition: service_healthy
+        ports:
+            - "8080:8080"
+        networks:
+            - system            
+volumes:
+    collector-database:
+
+networks:
+    system:
+
