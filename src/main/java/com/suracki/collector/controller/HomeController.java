@@ -21,6 +21,14 @@ public class HomeController {
     @Autowired
     private RoleCheck roleCheck;
 
+    /**
+     * Mapping for GET
+     *
+     * Serves home page
+     *
+     * @param model Model
+     * @return guest home page
+     */
     @RequestMapping("/")
     public String home(Model model)
     {

@@ -56,12 +56,16 @@ public class AdminService extends BaseService{
         });
     }
 
+    /**
+     * Method to check if database is already initialized
+     * If database is fresh, creates default Admin user
+     */
     private void setupAdmin() {
         User admin = userRepository.findByUsername("Admin");
         if (admin == null) {
             logger.info("Admin User Not Found");
             admin = new User();
-            admin.setFullname("Simon");
+            admin.setFullname("Admin");
             admin.setRole("Admin");
             admin.setUsername("Admin");
             admin.setPassword("$2a$12$3I2P2stDCpA0Hv/PUqQcEe3ivmjGu4EOHZmRNOgNz0Hg2xnjL7CtG");
