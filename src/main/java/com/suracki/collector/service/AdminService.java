@@ -232,14 +232,14 @@ public class AdminService extends BaseService{
         itemRepository.save(item);
         model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
         model.addAttribute("items", itemRepository.findByType(item.getType()));
-        return "admin/manage";
+        return "redirect:/admin/manage";
     }
 
     public String deleteItem(Integer id, Model model) {
         itemRepository.deleteById(id);
         model.addAttribute("types", new ArrayList<>(new LinkedHashSet<String>(itemRepository.getTypes())));
         model.addAttribute("items", itemRepository.findAll());
-        return "admin/manage";
+        return "redirect:/admin/manage";
     }
 
     public String cardDetails(Model model, String set_code, String collectors_number) {
