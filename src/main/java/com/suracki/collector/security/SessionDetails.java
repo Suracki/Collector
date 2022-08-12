@@ -4,6 +4,7 @@ public class SessionDetails {
 
     Integer lastPageNumber;
     String lastViewedType;
+    String lastViewedLocation;
 
     public Integer getLastPageNumber() {
         return lastPageNumber;
@@ -19,5 +20,13 @@ public class SessionDetails {
 
     public void setLastViewedType(String lastViewedType) {
         this.lastViewedType = lastViewedType;
+    }
+
+    public String getLastViewedLocation() {
+        return lastViewedLocation;
+    }
+
+    public void setLastViewedLocation(String lastViewedLocation) {
+        this.lastViewedLocation = lastViewedLocation;
     }
 }

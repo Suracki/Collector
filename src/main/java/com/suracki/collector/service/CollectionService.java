@@ -99,7 +99,17 @@ public class CollectionService extends BaseService {
         super.addTypes(model);
         SessionDetails sessionDetails = getSession();
         sessionDetails.setLastViewedType(type);
+        sessionDetails.setLastViewedLocation("");
         sessionDetails.setLastPageNumber(0);
+        return viewPaged(model);
+    }
+
+    public String viewByLocation(String location, Model model) {
+        super.addTypes(model);
+        SessionDetails sessionDetails = getSession();
+        sessionDetails.setLastPageNumber(0);
+        sessionDetails.setLastViewedType("");
+        sessionDetails.setLastViewedLocation(location);
         return viewPaged(model);
     }
 
@@ -107,9 +117,19 @@ public class CollectionService extends BaseService {
         super.addTypes(model);
         SessionDetails sessionDetails = getSession();
         String type = sessionDetails.getLastViewedType();
+        String location = sessionDetails.getLastViewedLocation();
         Integer page = sessionDetails.getLastPageNumber() + 1;
 
-        List<Item> items = itemRepository.findByType(type);
+        List<Item> items;
+
+        if (type.equals("")) {
+            //Filtering by location
+            items = itemRepository.findByLocation(location);
+        }
+        else {
+            //filtering by type
+            items = itemRepository.findByType(type);
+        }
         List<Item> displayItems;
 
         int stId = page*10 - 10;
@@ -207,13 +227,6 @@ public class CollectionService extends BaseService {
         super.addTypes(model);
         SessionDetails sessionDetails = getSession();
         model.addAttribute("collection", itemRepository.findByDetail(detail));
-        return "guest/view";
-    }
-
-    public String viewByLocation(String location, Model model) {
-        super.addTypes(model);
-        SessionDetails sessionDetails = getSession();
-        model.addAttribute("collection", itemRepository.findByLocation(location));
         return "guest/view";
     }
 
