@@ -118,6 +118,22 @@ public class GuestController {
     /**
      * Mapping for GET
      *
+     * Serves page to list collection for guest user
+     * The page is filtered by Item location (eg MTG deck, specific binder)
+     *
+     * @param model Model
+     * @param location String
+     * @return manage collection page with all items of matching detail stored in Model
+     */
+    @GetMapping("/guest/filterLocation")
+    public String viewFilterLocation(@RequestParam(value="location") String location, Model model) {
+        logger.info("User connected to /guest/filterLocation/{location} endpoint with detail " + location);
+        return collectionService.viewByLocation(location, model);
+    }
+
+    /**
+     * Mapping for GET
+     *
      * Serves page to view details for an MTG card
      * Details are obtained from Scryfall API if not already loaded into system
      *

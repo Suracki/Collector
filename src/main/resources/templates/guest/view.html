@@ -39,6 +39,7 @@
                     <th>Comments</th>
                     <th>Detail</th>
                     <th>Type</th>
+                    <th>Location</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -56,6 +57,9 @@
                         <a th:href="@{/guest/filterDetail/?detail={detail}(detail=${item.detail})}"><p th:text="${item.detail}"></a>
                     </td>
                     <td th:text="${item.type}"></td>
+                    <td>
+                        <a th:href="@{/guest/filterLocation/?location={location}(location=${item.storageLocation})}"><p th:text="${item.storageLocation}"></a>
+                    </td>
                     <td style="width: 15%" class="text-center">
                         <th:block th:if="${item.type == 'MTG'}"><a th:href="@{/guest/cardDetails?set_code={set}&collectors_number={col}(set=${item.detail},col=${item.itemNumber})}">Card Details</a></th:block>
                         <th:block th:if="${item.type == 'LEGO'}"><a th:href="@{https://www.bricklink.com/v2/catalog/catalogitem.page?S={col}-1(col=${item.itemNumber})}">Bricklink</a></th:block>

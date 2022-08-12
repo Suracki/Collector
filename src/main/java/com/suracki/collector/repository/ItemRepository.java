@@ -18,6 +18,9 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     @Query("SELECT u FROM Item u WHERE u.detail = ?1")
     List<Item> findByDetail(String detail);
 
+    @Query("SELECT u FROM Item u WHERE u.storageLocation = ?1")
+    List<Item> findByLocation(String location);
+
     @Query("SELECT type FROM Item")
     List<String> getTypes();
 

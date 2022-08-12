@@ -210,6 +210,13 @@ public class CollectionService extends BaseService {
         return "guest/view";
     }
 
+    public String viewByLocation(String location, Model model) {
+        super.addTypes(model);
+        SessionDetails sessionDetails = getSession();
+        model.addAttribute("collection", itemRepository.findByLocation(location));
+        return "guest/view";
+    }
+
     public String cardDetails(Model model, String set_code, String collectors_number) {
         MtgCard mtgCard = mtgCardRepository.findBySetAndCollectorNumber(set_code, collectors_number);
         SessionDetails sessionDetails = getSession();
