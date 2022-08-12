@@ -176,9 +176,19 @@ public class CollectionService extends BaseService {
         super.addTypes(model);
         SessionDetails sessionDetails = getSession();
         String type = sessionDetails.getLastViewedType();
+        String location = sessionDetails.getLastViewedLocation();
         Integer page = sessionDetails.getLastPageNumber() - 1;
 
-        List<Item> items = itemRepository.findByType(type);
+        List<Item> items;
+
+        if (type.equals("")) {
+            //Filtering by location
+            items = itemRepository.findByLocation(location);
+        }
+        else {
+            //filtering by type
+            items = itemRepository.findByType(type);
+        }
         List<Item> displayItems;
 
         int stId = page*10 - 10;
